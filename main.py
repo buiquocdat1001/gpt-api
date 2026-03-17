@@ -26,6 +26,6 @@ DATA = load_data()
 
 @app.post("/search")
 def search(q: Query):
-    if q.query.lower() in DATA.lower():
-        return {"answer": "Có trong tài liệu Drive"}
-    return {"answer": "Không thấy"}
+    return {
+        "answer": f"KẾT QUẢ API: {q.query}"
+    }

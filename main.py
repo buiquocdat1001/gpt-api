@@ -1,31 +1,27 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import requests
 
 app = FastAPI()
 
 class Query(BaseModel):
     query: str
 
-FILE_LINK = "https://drive.google.com/uc?export=download&id=1cjy-vLebKdu7XgXz8EHevtc2V_HlVrAi"
-
-def get_file_ids():
-    return [FILE_LINK]
-
-def load_data():
-    text = ""
-    for file_url in get_file_ids():
-        try:
-            r = requests.get(file_url)
-            text += r.text + "\n"
-        except:
-            pass
-    return text
-
-DATA = load_data()
+# DATA GIẢ (sau này thay bằng Drive)
+DATA = """
+Quy định mật khẩu:
+- Tối thiểu 8 ký tự
+- Có chữ hoa, chữ thường, số
+- Đổi mỗi 90 ngày
+"""
 
 @app.post("/search")
 def search(q: Query):
-    return {
-        "answer": f"KẾT QUẢ API: {q.query}"
-    }
+    if q.query.lower() in DATA.lower():
+        return {
+            "answer": DATA,
+            "source": " IT"
+        }
+    else:
+        return {
+            "answer": "Không tìm thấy thông tin phù hợp trong hệ thống."
+        }
